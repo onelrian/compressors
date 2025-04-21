@@ -1,62 +1,69 @@
 #!/bin/bash
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
 # Create test files
 echo "Creating test files..."
-mkdir -p test_files
-
-# Generate sample files of different sizes
-dd if=/dev/urandom of=test_files/random_1M.bin bs=1M count=1
-dd if=/dev/zero of=test_files/zeros_1M.bin bs=1M count=1
-yes "ABC" | head -c 1M > test_files/repeating_1M.bin
-cat /usr/share/dict/words | head -c 1M > test_files/text_1M.bin
+echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA" > test1.txt
+echo "ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB" > test2.txt
+dd if=/dev/urandom of=test3.txt bs=1M count=1 2>/dev/null
 
 # Function to run benchmark
 run_benchmark() {
     local impl=$1
     local algo=$2
-    local file=$3
+    local test_file=$3
+    local compressed_file="${test_file}.cmp"
+    local decompressed_file="${test_file}.dec"
 
-    echo -e "\nBenchmarking $impl with $algo on $(basename $file)"
-    
-    # Measure Compression Time
+    echo -e "\n${YELLOW}Testing $impl with $algo on $test_file${NC}"
+
+    # Compression
     echo "Compressing..."
-    compression_time=$( (time docker run -v $(pwd):/data ghcr.io/onelrian/compressors/$impl-compressor compress /data/$file /data/${file}.cmp --$algo) 2>&1 | grep real | awk '{print $2}' )
+    time docker run --rm -v "$(pwd):/data" ghcr.io/$(basename $(pwd))/$impl compress "/data/$test_file" "/data/$compressed_file" --$algo
 
-    # Measure Decompression Time
+    # Get compressed size
+    compressed_size=$(stat -f %z "$compressed_file" 2>/dev/null || stat -c %s "$compressed_file")
+    original_size=$(stat -f %z "$test_file" 2>/dev/null || stat -c %s "$test_file")
+    ratio=$(echo "scale=2; $compressed_size * 100 / $original_size" | bc)
+    echo -e "${GREEN}Compression ratio: ${ratio}%${NC}"
+
+    # Decompression
     echo "Decompressing..."
-    decompression_time=$( (time docker run -v $(pwd):/data ghcr.io/onelrian/compressors/$impl-compressor decompress /data/${file}.cmp /data/${file}.dec --$algo) 2>&1 | grep real | awk '{print $2}' )
+    time docker run --rm -v "$(pwd):/data" ghcr.io/$(basename $(pwd))/$impl decompress "/data/$compressed_file" "/data/$decompressed_file" --$algo
 
-    # Get compressed size and original size
-    compressed_size=$(stat -c%s "${file}.cmp")
-    original_size=$(stat -c%s "$file")
-
-    # Calculate compression ratio
-    ratio=$(echo "scale=2; $compressed_size / $original_size * 100" | bc)
-
-    # Output the results
-    echo "Compression time: $compression_time"
-    echo "Decompression time: $decompression_time"
-    echo "Compression ratio: ${ratio}%"
-
-    # Verify decompression
-    if cmp -s "$file" "${file}.dec"; then
-        echo "Verification: SUCCESS"
+    # Verify
+    if cmp -s "$test_file" "$decompressed_file"; then
+        echo -e "${GREEN}Verification successful${NC}"
     else
-        echo "Verification: FAILED"
+        echo -e "${RED}Verification failed${NC}"
     fi
-    
-    # Clean up
-    rm "${file}.cmp" "${file}.dec"
+
+    # Cleanup
+    rm -f "$compressed_file" "$decompressed_file"
 }
 
-# Run benchmarks on different files, algorithms, and implementations
-for file in test_files/*.bin; do
-    for impl in rust js; do
-        for algo in rle lz; do
-            run_benchmark $impl $algo $file
-        done
-    done
+# Run benchmarks
+echo -e "\n${YELLOW}Starting benchmarks...${NC}"
+
+for test_file in test1.txt test2.txt test3.txt; do
+    echo -e "\n${YELLOW}Testing file: $test_file${NC}"
+    
+    # Test RLE
+    run_benchmark "rust-compressor" "rle" "$test_file"
+    run_benchmark "js-compressor" "rle" "$test_file"
+    
+    # Test LZ77
+    run_benchmark "rust-compressor" "lz" "$test_file"
+    run_benchmark "js-compressor" "lz" "$test_file"
 done
 
 # Cleanup test files
-rm -rf test_files
+echo -e "\nCleaning up..."
+rm -f test1.txt test2.txt test3.txt
+
+echo -e "\n${GREEN}Benchmark completed${NC}"

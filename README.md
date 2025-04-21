@@ -1,70 +1,132 @@
-Got it! Here's an updated, more concise version of the `README.md` with the specific instructions to `chmod` the `benchmark.sh` script included:
+# Compression Tool
 
----
-
-# Compressor Tool
-
-A tool that implements **RLE** and **LZ77** compression algorithms in both **Rust** and **JavaScript**.
+A command-line compression tool implementing Run-Length Encoding (RLE) and Simplified LZ77 algorithms in both Rust and JavaScript.
 
 ## Features
 
-- **Compress** and **Decompress** using RLE or LZ77.
+- Two compression algorithms:
+  - Run-Length Encoding (RLE)
+  - Simplified LZ77
+- Implementations in both Rust and JavaScript
+- Docker support for easy deployment
+- Comprehensive test coverage
+- Performance benchmarking
 
-## Prerequisites
+## Installation
 
-### Rust
-- Install Rust & Cargo: [Install Rust](https://www.rust-lang.org/learn/get-started)
+### Docker (Recommended)
 
-### JavaScript
-- Install Node.js & npm: [Install Node.js](https://nodejs.org/)
+```bash
+# Pull the Docker images
+docker pull ghcr.io/your-org-name/rust-compressor
+docker pull ghcr.io/your-org-name/js-compressor
+```
 
-## Setup
+### From Source
 
-### Rust
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/your-repo/compressor-tool.git
-   cd compressor-tool/rust
-   cargo build --release
-   ```
+#### Rust Implementation
 
-### JavaScript
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/your-repo/compressor-tool.git
-   cd compressor-tool/js
-   npm install
-   ```
+```bash
+cd rust-compressor
+cargo build --release
+```
+
+#### JavaScript Implementation
+
+```bash
+cd js-compressor
+npm install
+```
 
 ## Usage
 
-### Rust
+### Basic Usage
+
 ```bash
-cargo run -- [compress|decompress] [--rle|--lz] [input_file] [output_file]
+# Compress a file using RLE
+compress <input_file> <output_file> --rle
+
+# Decompress a file using RLE
+decompress <input_file> <output_file> --rle
+
+# Compress a file using LZ77
+compress <input_file> <output_file> --lz
+
+# Decompress a file using LZ77
+decompress <input_file> <output_file> --lz
 ```
 
-### JavaScript
+### Using Docker
+
 ```bash
-npm start [compress|decompress] [--rle|--lz] [input_file] [output_file]
+# Compress a file using RLE (Rust implementation)
+docker run -v $(pwd):/data ghcr.io/your-org-name/rust-compressor compress /data/input.txt /data/output.txt.cmp --rle
+
+# Decompress a file using LZ77 (JavaScript implementation)
+docker run -v $(pwd):/data ghcr.io/your-org-name/js-compressor decompress /data/input.txt.cmp /data/output.txt --lz
 ```
 
-## Benchmarking
+## Algorithms
 
-To benchmark the compression and decompression performance:
+### Run-Length Encoding (RLE)
 
-1. **Make the `benchmark.sh` script executable:**
+RLE is a simple compression algorithm that works well for data with many repeated bytes. It stores repeated bytes as a pair of (count, byte).
 
-   ```bash
-   chmod +x benchmark.sh
-   ```
+Example:
+```
+Input:  "AAAABBBCCCC"
+Output: [(4, 'A'), (3, 'B'), (4, 'C')]
+```
 
-2. **Run the benchmark:**
+### Simplified LZ77
 
-   ```bash
-   ./benchmark.sh
-   ```
+LZ77 is a dictionary-based compression algorithm that works by finding repeated sequences in the input data. Our implementation uses a fixed sliding window of 20 bytes.
 
-The script will compare compression time, decompression time, and compression ratio for both implementations (Rust and JavaScript) using sample files.
+The compressed data consists of two types of tokens:
+- Literal: `0x00 + byte` - Represents a single byte
+- Match: `0x01 + offset + length` - Represents a repeated sequence
+
+## Development
+
+### Building
+
+```bash
+# Build Rust implementation
+cd rust-compressor
+cargo build
+
+# Build JavaScript implementation
+cd js-compressor
+npm install
+```
+
+### Testing
+
+```bash
+# Test Rust implementation
+cd rust-compressor
+cargo test
+
+# Test JavaScript implementation
+cd js-compressor
+npm test
+```
+
+### Benchmarking
+
+```bash
+# Run benchmarks
+./benchmark.sh
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
-MIT License.
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
