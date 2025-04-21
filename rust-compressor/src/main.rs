@@ -24,9 +24,9 @@ mod rle;
 /// # Arguments
 /// The program expects the following arguments:
 /// 1. Operation: "compress" or "decompress"
-/// 2. Algorithm: "--rle" or "--lz"
-/// 3. Input file path (or "-" for stdin)
-/// 4. Output file path (or "-" for stdout)
+/// 2. Input file path (or "-" for stdin)
+/// 3. Output file path (or "-" for stdout)
+/// 4. Algorithm: "--rle" or "--lz"
 ///
 /// # Errors
 /// Returns an error if:
@@ -37,9 +37,9 @@ mod rle;
 fn main() -> Result<()> {
     let args: Vec<String> = env::args().collect();
 
-    if args.len() < 4 {
+    if args.len() < 5 {
         eprintln!(
-            "Usage: {} [compress|decompress] [--rle|--lz] [input_file|-] [output_file|-]",
+            "Usage: {} [compress|decompress] [input_file|-] [output_file|-] [--rle|--lz]",
             args[0]
         );
         eprintln!("Example: {} compress input.txt output.txt.cmp --rle", args[0]);
@@ -47,9 +47,9 @@ fn main() -> Result<()> {
     }
 
     let operation = &args[1];
-    let algorithm = &args[2];
-    let input_path = &args[3];
-    let output_path = &args[4];
+    let input_path = &args[2];
+    let output_path = &args[3];
+    let algorithm = &args[4];
 
     // Determine input source
     let mut input: Box<dyn Read> = if input_path == "-" {
@@ -76,7 +76,7 @@ fn main() -> Result<()> {
         ("decompress", "--lz") => lz::decompress(&mut input, &mut output)
             .with_context(|| "LZ77 decompression failed")?,
         _ => {
-            eprintln!("Invalid operation or algorithm. Use 'compress' or 'decompress' with '--rle' or '--lz'");
+            eprintln!("Please specify compression algorithm (--rle or --lz)");
             process::exit(1);
         }
     }
