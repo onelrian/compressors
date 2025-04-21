@@ -20,11 +20,11 @@ run_benchmark() {
     
     # Measure Compression Time
     echo "Compressing..."
-    compression_time=$( (time docker run -v $(pwd):/data ghcr.io/$GITHUB_REPO_OWNER/$impl-compressor compress /data/$file /data/${file}.cmp --$algo) 2>&1 | grep real | awk '{print $2}' )
+    compression_time=$( (time docker run -v $(pwd):/data ghcr.io/onelrian/compressors/$impl-compressor compress /data/$file /data/${file}.cmp --$algo) 2>&1 | grep real | awk '{print $2}' )
 
     # Measure Decompression Time
     echo "Decompressing..."
-    decompression_time=$( (time docker run -v $(pwd):/data ghcr.io/$GITHUB_REPO_OWNER/$impl-compressor decompress /data/${file}.cmp /data/${file}.dec --$algo) 2>&1 | grep real | awk '{print $2}' )
+    decompression_time=$( (time docker run -v $(pwd):/data ghcr.io/onelrian/compressors/$impl-compressor decompress /data/${file}.cmp /data/${file}.dec --$algo) 2>&1 | grep real | awk '{print $2}' )
 
     # Get compressed size and original size
     compressed_size=$(stat -c%s "${file}.cmp")
