@@ -1,3 +1,7 @@
+Got it! Here's an updated, more concise version of the `README.md` with the specific instructions to `chmod` the `benchmark.sh` script included:
+
+---
+
 # Compressor Tool
 
 A tool that implements **RLE** and **LZ77** compression algorithms in both **Rust** and **JavaScript**.
@@ -43,6 +47,24 @@ cargo run -- [compress|decompress] [--rle|--lz] [input_file] [output_file]
 ```bash
 npm start [compress|decompress] [--rle|--lz] [input_file] [output_file]
 ```
+
+## Benchmarking
+
+To benchmark the compression and decompression performance:
+
+1. **Make the `benchmark.sh` script executable:**
+
+   ```bash
+   chmod +x benchmark.sh
+   ```
+
+2. **Run the benchmark:**
+
+   ```bash
+   ./benchmark.sh
+   ```
+
+The script will compare compression time, decompression time, and compression ratio for both implementations (Rust and JavaScript) using sample files.
 
 ## License
 MIT License.
