@@ -4,7 +4,6 @@ A command-line compression tool implementing Run-Length Encoding (RLE) and Simpl
 
 ## Features
 
-
 - Two compression algorithms:
   - Run-Length Encoding (RLE)
   - Simplified LZ77
