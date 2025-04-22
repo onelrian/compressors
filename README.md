@@ -19,7 +19,7 @@ A command-line compression tool implementing Run-Length Encoding (RLE) and Simpl
 ```bash
 # Pull the Docker images
 docker pull ghcr.io/onelrian/rust-compressor
-docker pull ghcr.io/your-org-name/js-compressor
+docker pull ghcr.io/onelrian/js-compressor
 ```
 
 ### From Source
