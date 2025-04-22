@@ -1,5 +1,5 @@
 # Build stage
-FROM rust:1.77-slim AS builder
+FROM rust:1.78-slim AS builder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /usr/src/app
 
 # Copy only the files needed for dependency resolution
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml ./
 
 # Create dummy source files to satisfy cargo
 RUN mkdir -p src && echo "fn main() {}" > src/main.rs
