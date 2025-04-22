@@ -36,7 +36,7 @@ RUN apt-get update && apt-get install -y \
 RUN useradd -m -u 1000 appuser
 
 # Copy the binary from builder
-COPY --from=builder --chown=appuser:appuser /usr/src/app/target/release/rust-compressor /usr/local/bin/compressor
+COPY --from=builder --chown=appuser:appuser /usr/src/app/target/release/compressor /usr/local/bin/compressor
 
 # Switch to non-root user
 USER appuser
