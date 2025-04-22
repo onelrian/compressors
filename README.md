@@ -18,7 +18,7 @@ A command-line compression tool implementing Run-Length Encoding (RLE) and Simpl
 
 ```bash
 # Pull the Docker images
-docker pull ghcr.io/your-org-name/rust-compressor
+docker pull ghcr.io/onelrian/rust-compressor
 docker pull ghcr.io/your-org-name/js-compressor
 ```
 
@@ -60,10 +60,10 @@ decompress <input_file> <output_file> --lz
 
 ```bash
 # Compress a file using RLE (Rust implementation)
-docker run -v $(pwd):/data ghcr.io/your-org-name/rust-compressor compress /data/input.txt /data/output.txt.cmp --rle
+docker run -v $(pwd):/data ghcr.io/onelrian/rust-compressor compress /data/input.txt /data/output.txt.cmp --rle
 
 # Decompress a file using LZ77 (JavaScript implementation)
-docker run -v $(pwd):/data ghcr.io/your-org-name/js-compressor decompress /data/input.txt.cmp /data/output.txt --lz
+docker run -v $(pwd):/data ghcr.io/onelrian/js-compressor decompress /data/input.txt.cmp /data/output.txt --lz
 ```
 
 ## Algorithms
