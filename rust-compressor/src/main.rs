@@ -54,7 +54,7 @@ fn main() -> Result<()> {
 
     // Check if input file exists
     if input_path != "-" && !Path::new(input_path).exists() {
-        eprintln!("Error: Input file '{}' does not exist", input_path);
+        eprintln!("Failed to open input file: {}", input_path);
         process::exit(1);
     }
 
