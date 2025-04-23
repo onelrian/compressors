@@ -29,11 +29,14 @@ const MAX_RUN_LENGTH: u8 = 255;
 /// - Reading from input fails
 /// - Writing to output fails
 pub fn compress<R: Read, W: Write>(input: &mut R, output: &mut W) -> Result<()> {
+    eprintln!("Starting RLE compression");
     let mut buffer = Vec::new();
     input.read_to_end(&mut buffer)
         .with_context(|| "Failed to read input data")?;
+    eprintln!("Read {} bytes from input", buffer.len());
 
     if buffer.is_empty() {
+        eprintln!("Input is empty, nothing to compress");
         return Ok(());
     }
 
@@ -52,6 +55,7 @@ pub fn compress<R: Read, W: Write>(input: &mut R, output: &mut W) -> Result<()> 
     }
     output.write_all(&[count, current_byte])
         .with_context(|| "Failed to write final compressed data")?;
+    eprintln!("Compression complete");
 
     Ok(())
 }
@@ -71,11 +75,14 @@ pub fn compress<R: Read, W: Write>(input: &mut R, output: &mut W) -> Result<()> 
 /// - Writing to output fails
 /// - Input data is not properly formatted (not pairs of count and byte)
 pub fn decompress<R: Read, W: Write>(input: &mut R, output: &mut W) -> Result<()> {
+    eprintln!("Starting RLE decompression");
     let mut buffer = Vec::new();
     input.read_to_end(&mut buffer)
         .with_context(|| "Failed to read compressed data")?;
+    eprintln!("Read {} bytes from input", buffer.len());
 
     if buffer.is_empty() {
+        eprintln!("Input is empty, nothing to decompress");
         return Ok(());
     }
 
@@ -88,6 +95,7 @@ pub fn decompress<R: Read, W: Write>(input: &mut R, output: &mut W) -> Result<()
         output.write_all(&vec![byte; count as usize])
             .with_context(|| format!("Failed to write decompressed data for byte {}", byte))?;
     }
+    eprintln!("Decompression complete");
 
     Ok(())
 }

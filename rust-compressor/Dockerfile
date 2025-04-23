@@ -30,11 +30,15 @@ FROM debian:bookworm-slim
 # Install runtime dependencies and debugging tools
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    file \
     strace \
     && rm -rf /var/lib/apt/lists/*
 
-# Create a non-root user
-RUN useradd -m -u 1000 appuser
+# Create a non-root user with the same UID/GID as the host user
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+RUN groupadd -g $GROUP_ID appuser && \
+    useradd -u $USER_ID -g $GROUP_ID -m appuser
 
 # Create app directory and set permissions
 RUN mkdir -p /app && chown -R appuser:appuser /app

@@ -1,0 +1,63 @@
+9     execve("/usr/local/bin/compressor", ["compressor", "compress", "/app/test.txt", "/app/compressed.cmp", "--rle"], 0x7ffd30a2f458 /* 3 vars */) = 0
+9     brk(NULL)                         = 0x61ddae5ee000
+9     mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7055c0f50000
+9     access("/etc/ld.so.preload", R_OK) = -1 ENOENT (No such file or directory)
+9     openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+9     newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=4967, ...}, AT_EMPTY_PATH) = 0
+9     mmap(NULL, 4967, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7055c0f4e000
+9     close(3)                          = 0
+9     openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libgcc_s.so.1", O_RDONLY|O_CLOEXEC) = 3
+9     read(3, "\177ELF\2\1\1\0\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\0\0\0\0\0\0\0\0"..., 832) = 832
+9     newfstatat(3, "", {st_mode=S_IFREG|0644, st_size=125312, ...}, AT_EMPTY_PATH) = 0
+9     mmap(NULL, 127688, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7055c0f2e000
+9     mmap(0x7055c0f31000, 94208, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x3000) = 0x7055c0f31000
+9     mmap(0x7055c0f48000, 16384, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1a000) = 0x7055c0f48000
+9     mmap(0x7055c0f4c000, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1d000) = 0x7055c0f4c000
+9     close(3)                          = 0
+9     openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+9     read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0\20t\2\0\0\0\0\0"..., 832) = 832
+9     pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+9     newfstatat(3, "", {st_mode=S_IFREG|0755, st_size=1922136, ...}, AT_EMPTY_PATH) = 0
+9     pread64(3, "\6\0\0\0\4\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0@\0\0\0\0\0\0\0"..., 784, 64) = 784
+9     mmap(NULL, 1970000, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7055c0d4d000
+9     mmap(0x7055c0d73000, 1396736, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x26000) = 0x7055c0d73000
+9     mmap(0x7055c0ec8000, 339968, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17b000) = 0x7055c0ec8000
+9     mmap(0x7055c0f1b000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1ce000) = 0x7055c0f1b000
+9     mmap(0x7055c0f21000, 53072, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7055c0f21000
+9     close(3)                          = 0
+9     mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7055c0d4a000
+9     arch_prctl(ARCH_SET_FS, 0x7055c0d4a780) = 0
+9     set_tid_address(0x7055c0d4aa50)   = 9
+9     set_robust_list(0x7055c0d4aa60, 24) = 0
+9     rseq(0x7055c0d4b0a0, 0x20, 0, 0x53053053) = 0
+9     mprotect(0x7055c0f1b000, 16384, PROT_READ) = 0
+9     mprotect(0x7055c0f4c000, 4096, PROT_READ) = 0
+9     mprotect(0x61dda4432000, 12288, PROT_READ) = 0
+9     mprotect(0x7055c0f83000, 8192, PROT_READ) = 0
+9     prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+9     munmap(0x7055c0f4e000, 4967)      = 0
+9     poll([{fd=0, events=0}, {fd=1, events=0}, {fd=2, events=0}], 3, 0) = 0 (Timeout)
+9     rt_sigaction(SIGPIPE, {sa_handler=SIG_IGN, sa_mask=[PIPE], sa_flags=SA_RESTORER|SA_RESTART, sa_restorer=0x7055c0d89050}, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+9     rt_sigaction(SIGSEGV, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+9     rt_sigaction(SIGSEGV, {sa_handler=0x61dda4404eb0, sa_mask=[], sa_flags=SA_RESTORER|SA_ONSTACK|SA_SIGINFO, sa_restorer=0x7055c0d89050}, NULL, 8) = 0
+9     rt_sigaction(SIGBUS, NULL, {sa_handler=SIG_DFL, sa_mask=[], sa_flags=0}, 8) = 0
+9     rt_sigaction(SIGBUS, {sa_handler=0x61dda4404eb0, sa_mask=[], sa_flags=SA_RESTORER|SA_ONSTACK|SA_SIGINFO, sa_restorer=0x7055c0d89050}, NULL, 8) = 0
+9     sigaltstack(NULL, {ss_sp=NULL, ss_flags=SS_DISABLE, ss_size=0}) = 0
+9     mmap(NULL, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS|MAP_STACK, -1, 0) = 0x7055c0d47000
+9     mprotect(0x7055c0d47000, 4096, PROT_NONE) = 0
+9     sigaltstack({ss_sp=0x7055c0d48000, ss_flags=0, ss_size=8192}, NULL) = 0
+9     getrandom("\xa1\x01\x3e\x39\x1c\xa7\x51\x9a", 8, GRND_NONBLOCK) = 8
+9     brk(NULL)                         = 0x61ddae5ee000
+9     brk(0x61ddae60f000)               = 0x61ddae60f000
+9     openat(AT_FDCWD, "/proc/self/maps", O_RDONLY|O_CLOEXEC) = 3
+9     prlimit64(0, RLIMIT_STACK, NULL, {rlim_cur=8192*1024, rlim_max=RLIM64_INFINITY}) = 0
+9     newfstatat(3, "", {st_mode=S_IFREG|0444, st_size=0, ...}, AT_EMPTY_PATH) = 0
+9     read(3, "61dda43e0000-61dda43e6000 r--p 0"..., 1024) = 1024
+9     read(3, "6_64-linux-gnu/libc.so.6\n7055c0f"..., 1024) = 1024
+9     read(3, "2\n7055c0f53000-7055c0f79000 r-xp"..., 1024) = 807
+9     close(3)                          = 0
+9     sched_getaffinity(9, 32, [0 1 2 3]) = 8
+9     sigaltstack({ss_sp=NULL, ss_flags=SS_DISABLE, ss_size=8192}, NULL) = 0
+9     munmap(0x7055c0d47000, 12288)     = 0
+9     exit_group(0)                     = ?
+9     +++ exited with 0 +++
