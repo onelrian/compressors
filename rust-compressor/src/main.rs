@@ -15,6 +15,7 @@ use std::env;
 use std::fs::File;
 use std::io::{self, Read, Write};
 use std::process;
+use std::path::Path;
 
 mod lz;
 mod rle;
@@ -51,6 +52,12 @@ fn main() -> Result<()> {
     let output_path = &args[3];
     let algorithm = &args[4];
 
+    // Check if input file exists
+    if input_path != "-" && !Path::new(input_path).exists() {
+        eprintln!("Error: Input file '{}' does not exist", input_path);
+        process::exit(1);
+    }
+
     // Determine input source
     let mut input: Box<dyn Read> = if input_path == "-" {
         Box::new(io::stdin())
@@ -76,7 +83,7 @@ fn main() -> Result<()> {
         ("decompress", "--lz") => lz::decompress(&mut input, &mut output)
             .with_context(|| "LZ77 decompression failed")?,
         _ => {
-            eprintln!("Please specify compression algorithm (--rle or --lz)");
+            eprintln!("Error: Invalid operation or algorithm. Use 'compress' or 'decompress' with '--rle' or '--lz'");
             process::exit(1);
         }
     }

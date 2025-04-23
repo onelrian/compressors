@@ -27,11 +27,9 @@ RUN cargo build --release
 # Runtime stage
 FROM debian:bookworm-slim
 
-# Install runtime dependencies and debugging tools
+# Install runtime dependencies
 RUN apt-get update && apt-get install -y \
     ca-certificates \
-    file \
-    strace \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user with the same UID/GID as the host user
