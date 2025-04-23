@@ -27,19 +27,26 @@ RUN cargo build --release
 # Runtime stage
 FROM debian:bookworm-slim
 
-# Install runtime dependencies
+# Install runtime dependencies and debugging tools
 RUN apt-get update && apt-get install -y \
     ca-certificates \
+    strace \
     && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
 RUN useradd -m -u 1000 appuser
+
+# Create app directory and set permissions
+RUN mkdir -p /app && chown -R appuser:appuser /app
 
 # Copy the binary from builder
 COPY --from=builder --chown=appuser:appuser /usr/src/app/target/release/compressor /usr/local/bin/compressor
 
 # Switch to non-root user
 USER appuser
+
+# Set working directory
+WORKDIR /app
 
 # Set the entrypoint
 ENTRYPOINT ["compressor"]
